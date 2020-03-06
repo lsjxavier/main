@@ -14,7 +14,7 @@ public class BudgetCommand extends Command {
     public static final String COMMAND_WORD = "budget";
 
     public static final String MESSAGE_USAGE =
-        COMMAND_WORD + "VIEW : View the budget. \n"
+        COMMAND_WORD + " VIEW : View the budget. \n"
             + "SET : Set the budget"
             + "Parameters: "
             + PREFIX_DATE_BY_MONTH

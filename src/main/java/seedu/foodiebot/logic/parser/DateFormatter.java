@@ -15,6 +15,7 @@ import seedu.foodiebot.logic.parser.exceptions.ParseException;
 /** Formats an input String into a LocalDate object */
 public class DateFormatter {
 
+    /** A list of valid date formats. */
     public static Stream<DateTimeFormatter> dateFormats() {
         return Stream.of(DateTimeFormatter.ofPattern("d.M.uu"),
                 DateTimeFormatter.ofPattern("d.M.uuuu"),
@@ -25,6 +26,7 @@ public class DateFormatter {
         );
     }
 
+    /** A list of valid month formats. */
     public static List<String> monthFormats() {
         return List.of("JAN", "FEB", "MAR",
                 "APR", "MAY", "JUN",
@@ -42,7 +44,7 @@ public class DateFormatter {
     public static LocalDate formatDate(String dateString) throws ParseException {
         return dateFormats()
                 .map(date -> parseDate(dateString, date.withResolverStyle(ResolverStyle.STRICT)))
-                .reduce((a,b) -> a.equals(Optional.empty()) ? b : a)
+                .reduce((a, b) -> a.equals(Optional.empty()) ? b : a)
                 .get()
                 .orElseThrow(() -> new ParseException(MESSAGE_INVALID_DATE));
     }
@@ -59,16 +61,17 @@ public class DateFormatter {
         }
     }
 
+    /** Formats the given String month into an integer. Throws a ParseException if the month is not valid. */
     public static int formatMonth(String month) throws ParseException {
         List<String> monthFormats = monthFormats();
-        int monthIndex = monthFormats.indexOf(month.toUpperCase().substring(0,3));
+        int monthIndex = monthFormats.indexOf(month.toUpperCase().substring(0, 3));
         if (monthIndex > -1) {
             return monthIndex + 1;
         }
         throw new ParseException(MESSAGE_INVALID_DATE);
     }
 
-
+    /** Formats the given String year into an integer. Throws a ParseException if the year is not valid. */
     public static int formatYear(String year) throws ParseException {
         try {
             return Integer.parseInt(year);
