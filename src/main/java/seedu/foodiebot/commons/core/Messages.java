@@ -14,4 +14,5 @@ public class Messages {
         + "You have $ %.2f available to spend this week.\n"
         + "Here are your spendings this week: \n ";
     public static final String MESSAGE_NOTAVAILABLE = "No information available";
+    public static final String MESSAGE_INVALID_DATE = "Invalid date format!";
 }
