@@ -5,6 +5,10 @@ import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_DAY;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_MONTH;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_WEEK;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import seedu.foodiebot.logic.commands.BudgetCommand;
 import seedu.foodiebot.logic.parser.exceptions.ParseException;
 import seedu.foodiebot.model.budget.Budget;
@@ -19,58 +23,96 @@ public class BudgetCommandParser implements Parser<BudgetCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public BudgetCommand parse(String args) throws ParseException {
-        String trimmedArgs = args.trim();
-        if (trimmedArgs.isEmpty()) {
-            throw new ParseException(
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, BudgetCommand.MESSAGE_USAGE));
-        }
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_DATE_BY_DAY,
+                PREFIX_DATE_BY_WEEK, PREFIX_DATE_BY_MONTH);
+        String action = argMultimap.getPreamble();
 
-        String[] nameKeywords = trimmedArgs.split("\\s+");
-
-        String action = nameKeywords[0];
-        switch (action) {
+        switch(action) {
         case "set":
-            if (nameKeywords.length != 3) {
-                break;
-            }
-
-            String duration = nameKeywords[1];
-            if (!isValidDuration(duration)) {
-                break;
-            }
-
-            float value;
             try {
-                value = Float.parseFloat(nameKeywords[2]);
-            } catch (Exception e) {
+                Budget budget = setBudget(argMultimap);
+                return new BudgetCommand(budget, action);
+            } catch (IndexOutOfBoundsException oobe) {
                 break;
             }
-
-            Budget budget = new Budget(value, duration);
-            return new BudgetCommand(budget, action);
 
         case "view":
-            // Budget budget = [load budget object from storage?]
-            // return new BudgetCommand(budget);
             return new BudgetCommand(action);
-            // break; // delete this later
-
         default:
             break;
+        }
+        throw new ParseException(
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, BudgetCommand.MESSAGE_USAGE));
+    }
+
+    private static boolean isValidPrefix(Prefix duration) {
+        return duration.equals(PREFIX_DATE_BY_DAY)
+                || duration.equals(PREFIX_DATE_BY_WEEK)
+                || duration.equals(PREFIX_DATE_BY_MONTH);
+    }
+
+    public Budget setBudget(ArgumentMultimap argMultimap) throws ParseException {
+
+        int argMultimapPrefixCount = getArgMultimapPrefixCount(argMultimap);
+        Prefix firstPrefix = argPrefixCombination(argMultimap).get(0);
+
+        if (argMultimapPrefixCount == 1 && isValidPrefix(firstPrefix)) {
+            try {
+                String argValue = getArgString(argMultimap, firstPrefix);
+                float value = Float.parseFloat(argValue);
+                return new Budget(value, firstPrefix.toString());
+
+            } catch (NullPointerException | NumberFormatException ne) {
+                throw new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, BudgetCommand.MESSAGE_USAGE));
+            }
         }
 
         throw new ParseException(
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, BudgetCommand.MESSAGE_USAGE));
-
     }
 
-    private static boolean isValidDuration(String duration) {
-        return duration.equals(PREFIX_DATE_BY_DAY.toString())
-                || duration.equals(PREFIX_DATE_BY_WEEK.toString())
-                || duration.equals(PREFIX_DATE_BY_MONTH.toString());
+    /** Extracts the argument tagged to the given prefix. Throws {@code ParseException}
+     * if no value is present.
+     * */
+    public static String getArgString(ArgumentMultimap argMultimap, Prefix prefix) throws ParseException {
+        return argMultimap.getValue(prefix)
+                .orElseThrow(() -> new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, BudgetCommand.MESSAGE_USAGE)));
     }
 
+    /** Returns the number of prefixes present in the {@code ArgumentMultimap} that has
+     * at least one argument.
+     * */
+    public int getArgMultimapPrefixCount(ArgumentMultimap argumentMultimap) {
+        List<Prefix> validPrefixes = List.of(PREFIX_DATE_BY_DAY,
+                PREFIX_DATE_BY_WEEK, PREFIX_DATE_BY_MONTH);
 
+        int count = 0;
+        for (Prefix prefix : validPrefixes) {
+            if (!argumentMultimap.getAllValues(prefix).isEmpty()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /** Retrieves the combination of prefixes in the {@code ArgumentMultimap} that has
+     * at least one argument.
+     * */
+    public List<Prefix> argPrefixCombination(ArgumentMultimap argumentMultimap) {
+        List<Prefix> validPrefixes = List.of(PREFIX_DATE_BY_DAY,
+                PREFIX_DATE_BY_WEEK, PREFIX_DATE_BY_MONTH);
+
+        ArrayList<Prefix> combination = new ArrayList<Prefix>();
+        for (Prefix prefix : validPrefixes) {
+            Optional<String> value = argumentMultimap.getValue(prefix);
+            if (!value.equals(Optional.empty())) {
+                combination.add(prefix);
+            }
+        }
+        return combination;
+    }
 
 
 }

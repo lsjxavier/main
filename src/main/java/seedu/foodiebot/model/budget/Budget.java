@@ -1,11 +1,15 @@
 package seedu.foodiebot.model.budget;
 
 import static java.util.Objects.requireNonNull;
+
+import static seedu.foodiebot.commons.core.Messages.MESSAGE_INVALID_PREFIX;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_DAY;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_MONTH;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_WEEK;
 
 import java.time.LocalDate;
+
+import seedu.foodiebot.logic.parser.exceptions.ParseException;
 
 /**
  * Represents a person's budget.
@@ -26,7 +30,7 @@ public class Budget {
      * @param totalBudget The value of the budget.
      * @param duration The duration cycle of the budget.
      */
-    public Budget(float totalBudget, String duration) {
+    public Budget(float totalBudget, String duration) throws ParseException {
         requireNonNull(duration);
         this.totalBudget = totalBudget;
         this.remainingBudget = totalBudget;
@@ -50,10 +54,10 @@ public class Budget {
      * @param duration The duration cycle of the budget.
      * @return A consolidated duration cycle of the budget.
      */
-    private String setDuration(String duration) {
-        boolean setToDaily = duration.equals("daily") || duration.equals(PREFIX_DATE_BY_DAY.toString());
-        boolean setToWeekly = duration.equals("weekly") || duration.equals(PREFIX_DATE_BY_WEEK.toString());
-        boolean setToMonthly = duration.equals("monthly") || duration.equals(PREFIX_DATE_BY_MONTH.toString());
+    private String setDuration(String duration) throws ParseException {
+        boolean setToDaily = duration.equals(PREFIX_DATE_BY_DAY.toString());
+        boolean setToWeekly = duration.equals(PREFIX_DATE_BY_WEEK.toString());
+        boolean setToMonthly = duration.equals(PREFIX_DATE_BY_MONTH.toString());
 
         if (setToDaily) {
             return DAILY;
@@ -62,7 +66,7 @@ public class Budget {
         } else if (setToMonthly) {
             return MONTHLY;
         } else {
-            return "";
+            throw new ParseException(MESSAGE_INVALID_PREFIX);
         }
     }
 
@@ -85,7 +89,7 @@ public class Budget {
      * Resets any spending of the budget if the duration of the budget has been reached.
      * @return A new budget.
      */
-    public Budget reset() {
+    public Budget reset() throws ParseException {
         return new Budget(this.totalBudget, this.duration);
     }
 
