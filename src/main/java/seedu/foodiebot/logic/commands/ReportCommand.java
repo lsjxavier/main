@@ -1,6 +1,7 @@
 package seedu.foodiebot.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.foodiebot.commons.core.Messages.MESSAGE_REPORT_EXPENSE;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_MONTH;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_FROM_DATE;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_TO_DATE;
@@ -33,7 +34,7 @@ public class ReportCommand extends Command {
             + PREFIX_DATE_BY_MONTH
             + "jan";
 
-    public static final String MESSAGE_SUCCESS = "Here are your expenses from %s to %s:\n";
+    public static final String MESSAGE_SUCCESS = MESSAGE_REPORT_EXPENSE;
 
     private final DateRange dateRange;
 
