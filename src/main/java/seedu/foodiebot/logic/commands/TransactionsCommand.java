@@ -1,12 +1,11 @@
 package seedu.foodiebot.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_MONTH;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_FROM_DATE;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_TO_DATE;
 
-import java.time.LocalDate;
-import java.util.stream.Stream;
-
+import seedu.foodiebot.commons.core.date.DateRange;
 import seedu.foodiebot.model.Model;
 
 /** Gets the latest food transactions where reviews and single-user ratings can be added. */
@@ -19,18 +18,26 @@ public class TransactionsCommand extends Command {
             + " FROM_DATE "
             + PREFIX_TO_DATE
             + " TO_DATE\n"
+            + COMMAND_WORD
+            + " "
+            + PREFIX_DATE_BY_MONTH
+            + " MONTH\n"
             + "Example: "
             + COMMAND_WORD
             + " "
             + PREFIX_FROM_DATE
             + "14/2/2020 "
-            + PREFIX_TO_DATE + "24/2/2020";
+            + PREFIX_TO_DATE + "24/2/2020\n"
+            + COMMAND_WORD
+            + " "
+            + PREFIX_DATE_BY_MONTH
+            + "jan";
 
-    public static final String MESSAGE_SUCCESS = "Here are your expenses for ";
+    public static final String MESSAGE_SUCCESS = "Here are your transactions from %s to %s:\n";
 
-    private final Stream<LocalDate> dateRange;
+    private final DateRange dateRange;
 
-    public TransactionsCommand(Stream<LocalDate> dateRange) {
+    public TransactionsCommand(DateRange dateRange) {
         this.dateRange = dateRange;
     }
 
@@ -38,6 +45,8 @@ public class TransactionsCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
 
-        return new CommandResult(COMMAND_WORD, MESSAGE_SUCCESS);
+        return new CommandResult(COMMAND_WORD,
+                String.format(MESSAGE_SUCCESS,
+                        dateRange.getStartDate().toString(), dateRange.getEndDate().toString()));
     }
 }
