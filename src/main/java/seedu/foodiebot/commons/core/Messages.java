@@ -17,4 +17,5 @@ public class Messages {
     public static final String MESSAGE_NOTAVAILABLE = "No information available";
     public static final String MESSAGE_INVALID_DATE = "Invalid date format!";
     public static final String MESSAGE_INVALID_PREFIX = "Invalid prefix!";
+    public static final String MESSAGE_INVALID_DATE_RANGE = "Invalid date range!";
 }

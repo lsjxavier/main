@@ -6,6 +6,7 @@ import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_MONTH;
 
 import java.util.Optional;
 
+import seedu.foodiebot.logic.parser.exceptions.ParseException;
 import seedu.foodiebot.model.Model;
 import seedu.foodiebot.model.budget.Budget;
 
@@ -36,7 +37,7 @@ public class BudgetCommand extends Command {
         this.action = action;
     }
 
-    public BudgetCommand(String action) {
+    public BudgetCommand(String action) throws ParseException {
         this.budget = new Budget();
         this.action = action;
     }

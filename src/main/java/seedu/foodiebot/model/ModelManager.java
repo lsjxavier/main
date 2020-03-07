@@ -151,13 +151,15 @@ public class ModelManager implements Model {
             if (newBot.equals(Optional.empty())) {
                 return Optional.empty();
             }
-            return Optional.of(newBot.get().getBudget());
+
+            Budget budget = newBot.get().getBudget();
+
+            return Optional.of(budget);
         } catch (DataConversionException e) {
             return Optional.empty();
         } catch (IOException e) {
             return Optional.empty();
         }
-        // return foodieBot.getBudget();
 
     }
 

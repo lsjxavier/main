@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import seedu.foodiebot.commons.core.date.DateFormatter;
 import seedu.foodiebot.commons.core.date.DateRange;
+import seedu.foodiebot.commons.core.date.DateRangeStyle;
 import seedu.foodiebot.logic.commands.ReportCommand;
 import seedu.foodiebot.logic.parser.exceptions.ParseException;
 
@@ -42,7 +43,7 @@ public class ReportCommandParser implements Parser<ReportCommand> {
         } else if (argPrefixCombination.equals(COMBINATION_START_END)) {
             String start = getArgString(argMultimap, PREFIX_FROM_DATE);
             String end = getArgString(argMultimap, PREFIX_TO_DATE);
-            return new ReportCommand(DateRange.of(start, end));
+            return new ReportCommand(DateRange.of(start, end, DateRangeStyle.STRICT));
 
         } else if (argPrefixCombination.equals(COMBINATION_ONLY_START)) {
             String start = getArgString(argMultimap, PREFIX_FROM_DATE);
@@ -55,19 +56,19 @@ public class ReportCommandParser implements Parser<ReportCommand> {
         } else if (argPrefixCombination.equals(COMBINATION_ONLY_MONTH)) {
             String monthString = getArgString(argMultimap, PREFIX_DATE_BY_MONTH);
             int month = DateFormatter.formatMonth(monthString);
-            return new ReportCommand(DateRange.ofMonth(month));
+            return new ReportCommand(DateRange.ofMonth(month, DateRangeStyle.STRICT));
 
         } else if (argPrefixCombination.equals(COMBINATION_ONLY_YEAR)) {
             String yearString = getArgString(argMultimap, PREFIX_DATE_BY_YEAR);
             int year = DateFormatter.formatYear(yearString);
-            return new ReportCommand(DateRange.ofYear(year));
+            return new ReportCommand(DateRange.ofYear(year, DateRangeStyle.STRICT));
 
         } else if (argPrefixCombination.equals(COMBINATION_MONTH_YEAR)) {
             String monthString = getArgString(argMultimap, PREFIX_DATE_BY_MONTH);
             String yearString = getArgString(argMultimap, PREFIX_DATE_BY_YEAR);
             int month = DateFormatter.formatMonth(monthString);
             int year = DateFormatter.formatYear(yearString);
-            return new ReportCommand(DateRange.ofMonth(month, year));
+            return new ReportCommand(DateRange.ofMonth(month, year, DateRangeStyle.STRICT));
 
         } else {
             throw new ParseException(
