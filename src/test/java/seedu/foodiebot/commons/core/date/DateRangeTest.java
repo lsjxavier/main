@@ -67,7 +67,6 @@ public class DateRangeTest {
         // check creation of month
         assertEquals(LocalDate.of(2019, 2, 28),
                 createValidDateRangeMonthYear(2, 2019).getEndDate());
-
     }
 
     @Test
@@ -75,11 +74,14 @@ public class DateRangeTest {
         // system date falls within DateRange -> returns true
         assertTrue(DATE_RANGE_LONG.contains(LocalDate.now()));
 
-        // system date falls within DateRange starting from distant future -> returns false;
+        // system date falls within DateRange starting from distant future -> returns false
         assertFalse(DATE_RANGE_START_IN_DISTANT_FUTURE.contains(LocalDate.now()));
 
-        // system date falls on the end date of a DateRange -> returns true;
+        // system date falls on the end date of a DateRange -> returns true
         assertTrue(DATE_RANGE_END_TODAY.contains(LocalDate.now()));
+
+        // a date falls on the start date of a DateRange -> returns true
+        assertTrue(DATE_RANGE_YEAR_2020.contains(LocalDate.of(2020, 1, 1)));
     }
 
 

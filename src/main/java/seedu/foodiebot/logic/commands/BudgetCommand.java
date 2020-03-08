@@ -4,9 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.foodiebot.commons.core.Messages.MESSAGE_BUDGET_VIEW;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_MONTH;
 
-import java.util.Optional;
-
-import seedu.foodiebot.commons.core.date.Dates;
+import seedu.foodiebot.commons.core.date.DefiniteDate;
 import seedu.foodiebot.model.FoodieBot;
 import seedu.foodiebot.model.Model;
 import seedu.foodiebot.model.budget.Budget;
@@ -43,37 +41,50 @@ public class BudgetCommand extends Command {
         this.action = action;
     }
 
+    /** A boolean check if the current system date falls inside the budget range */
+    public static boolean systemDateIsInCycleRange(Budget budget) {
+        return budget.getCycleRange().contains(DefiniteDate.TODAY);
+    }
+
+    /** Helper function to write the budget to the model. */
+    public static void saveBudget(Model model, Budget budget) {
+        model.setFoodieBot(new FoodieBot());
+        model.setBudget(budget);
+    }
+
+    /** Helper function to read the budget from the model. */
+    public static Budget loadBudget(Model model) {
+        return model.getBudget().isPresent()
+                ? model.getBudget().get()
+                : null;
+    }
+
+    /** Helper function to hold a successful return message. */
+    public static CommandResult commandSuccess(Budget budget) {
+        return new CommandResult(COMMAND_WORD, String.format(MESSAGE_SUCCESS,
+                budget.getDuration(), budget.getTotalBudget(), budget.getRemainingWeeklyBudget()));
+    }
+
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
+
         if (action.equals("set")) {
-            // Saves the budget to disk and return a feedback to the user.
-            model.setFoodieBot(new FoodieBot());
-            model.setBudget(budget);
-            return new CommandResult(COMMAND_WORD, String.format(MESSAGE_SUCCESS,
-                    budget.getDuration(), budget.getTotalBudget(), budget.getRemainingWeeklyBudget()));
+            saveBudget(model, budget);
+            return commandSuccess(budget);
 
         } else {
-            // Loads the file and gets the budget object.
-            Optional<Budget> jsonBudget = model.getBudget();
-            if (jsonBudget.equals(Optional.empty())) {
-                return new CommandResult(COMMAND_WORD, MESSAGE_FAILURE);
+            Budget savedBudget = loadBudget(model);
+            if (savedBudget != null) {
+                if (!systemDateIsInCycleRange(savedBudget)) {
+                    savedBudget.resetRemainingBudget();
+                }
+                saveBudget(model, savedBudget);
+                return commandSuccess(savedBudget);
             }
 
-            // Gets the budget and checks if the current date is within the cycle.
-            Budget savedBudget = jsonBudget.get();
-            if (!savedBudget.getCycleRange().contains(Dates.TODAY)) {
-                savedBudget = new Budget(savedBudget.getTotalBudget(), savedBudget.getDuration());
-            }
-
-            // Saves the budget to disk and return a feedback to the user.
-            model.setFoodieBot(new FoodieBot());
-            model.setBudget(savedBudget);
-            return new CommandResult(COMMAND_WORD, String.format(MESSAGE_SUCCESS,
-                    savedBudget.getDuration(), savedBudget.getTotalBudget(),
-                    savedBudget.getRemainingWeeklyBudget()));
+            return new CommandResult(COMMAND_WORD, MESSAGE_FAILURE);
         }
-
 
     }
 }

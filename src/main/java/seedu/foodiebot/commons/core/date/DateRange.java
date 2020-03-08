@@ -2,17 +2,14 @@ package seedu.foodiebot.commons.core.date;
 
 import static seedu.foodiebot.commons.core.Messages.MESSAGE_INVALID_DATE_RANGE;
 import static seedu.foodiebot.commons.core.Messages.MESSAGE_INVALID_PREFIX;
-import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_FROM_DATE;
-import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_TO_DATE;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Objects;
 
-import seedu.foodiebot.logic.parser.Prefix;
 import seedu.foodiebot.logic.parser.exceptions.ParseException;
 
-/** An encapsulation of a date range represented by a LinkedList of LocalDate objects. */
+/** An abstraction of a date range represented as a tuple. */
 public class DateRange {
 
     private final LocalDate startDate;
@@ -27,7 +24,8 @@ public class DateRange {
     /**
      * Generates a new DateRange object with the specified style.
      *
-     * If the style is LENIENT, this will return a valid date range between the two supplied dates.
+     * If the style is LENIENT, this will return a valid date range between the two supplied dates regardless
+     * of its position when passed into the method.
      *
      * If the style is SMART, this will return a valid date range only if the following conditions are met:
      *     - The end date must not be before the start date.
@@ -42,7 +40,8 @@ public class DateRange {
      * @param endDate The end date of the range.
      * @param style The style to set the range to.
      * @return a DateRange object.
-     * @throws ParseException If the end date occurs before the start date.
+     * @throws ParseException If the attempt to create a date range does not conform to the requirements
+     * of the specified style.
      */
     public static DateRange of(LocalDate startDate, LocalDate endDate, DateRangeStyle style)
             throws ParseException {
@@ -62,12 +61,12 @@ public class DateRange {
             return new DateRange(startDate, endDate);
 
         case STRICT:
-            if (endDate.isBefore(startDate) || startDate.isAfter(Dates.TODAY)) {
+            if (endDate.isBefore(startDate) || startDate.isAfter(DefiniteDate.TODAY)) {
                 break;
             }
 
-            if (endDate.isAfter(Dates.TODAY)) {
-                return new DateRange(startDate, Dates.TODAY);
+            if (endDate.isAfter(DefiniteDate.TODAY)) {
+                return new DateRange(startDate, DefiniteDate.TODAY);
             } else {
                 return new DateRange(startDate, endDate);
             }
@@ -102,21 +101,24 @@ public class DateRange {
 
     /** Overloaded constructor to generate a new DateRange object if only one one date is supplied,
      * with the type whether it is a start or an end date.*/
-    public static DateRange of(String dateString, Prefix prefix, DateRangeStyle style) throws ParseException {
-        if (prefix.equals(PREFIX_FROM_DATE)) {
+    public static DateRange of(String dateString, ConceptualDate conceptualDate, DateRangeStyle style)
+            throws ParseException {
+
+        if (conceptualDate.equals(ConceptualDate.START_DATE)) {
             LocalDate startDate = DateFormatter.formatDate(dateString);
-            return DateRange.of(startDate, Dates.TODAY, style);
-        } else if (prefix.equals(PREFIX_TO_DATE)) {
+            return DateRange.of(startDate, DefiniteDate.TODAY, style);
+
+        } else if (conceptualDate.equals(ConceptualDate.END_DATE)) {
             LocalDate endDate = DateFormatter.formatDate(dateString);
-            return DateRange.of(Dates.MIN_DATE, endDate, style);
+            return DateRange.of(DefiniteDate.MIN_DATE, endDate, style);
         }
         throw new ParseException(MESSAGE_INVALID_PREFIX);
     }
 
     /** Overloaded constructor to generate a new DateRange object if only one one date is supplied,
      * with the type whether it is a start or an end date.*/
-    public static DateRange of(String dateString, Prefix prefix) throws ParseException {
-        return DateRange.of(dateString, prefix, DateRangeStyle.SMART);
+    public static DateRange of(String dateString, ConceptualDate conceptualDate) throws ParseException {
+        return DateRange.of(dateString, conceptualDate, DateRangeStyle.SMART);
     }
 
     /**
@@ -140,7 +142,7 @@ public class DateRange {
      * with the year as the current system year.
      */
     public static DateRange ofMonth(int month, DateRangeStyle style) throws ParseException {
-        int year = Dates.TODAY.getYear();
+        int year = DefiniteDate.TODAY.getYear();
         return DateRange.ofMonth(month, year, style);
     }
 
@@ -168,7 +170,7 @@ public class DateRange {
         return DateRange.ofYear(year, DateRangeStyle.SMART);
     }
 
-    /** Generates a new DateRange object with range as a single day, for the current system date. */
+    /** Generates a new DateRange object with range as a single day. */
     public static DateRange ofSingle(LocalDate date) throws ParseException {
         return DateRange.of(date, date, DateRangeStyle.SMART);
     }
@@ -178,7 +180,7 @@ public class DateRange {
      * @return a DateRange object.
      */
     public static DateRange generate() throws ParseException {
-        return DateRange.of(Dates.MIN_DATE, Dates.MAX_DATE);
+        return DateRange.of(DefiniteDate.MIN_DATE, DefiniteDate.MAX_DATE);
     }
 
     /** Gets the start date of the DateRange. */

@@ -1,0 +1,21 @@
+{
+  "stalls" : [ {
+    "name" : "Taiwanese",
+    "canteenName" : "The Deck",
+    "stallNumber" : 3,
+    "stallImageName" : "muslim.png",
+    "cuisine" : "asian",
+    "overallPriceRating" : "$",
+    "favorite" : 0,
+    "tagged" : [ ]
+  }, {
+    "name" : "Yong Tau Foo",
+    "canteenName" : "Nus Flavors",
+    "stallNumber" : 5,
+    "stallImageName" : "yongtaufoo.png",
+    "cuisine" : "asian",
+    "overallPriceRating" : "$",
+    "favorite" : 0,
+    "tagged" : [ ]
+  } ]
+}

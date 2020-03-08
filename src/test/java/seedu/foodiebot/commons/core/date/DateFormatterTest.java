@@ -15,7 +15,6 @@ public class DateFormatterTest {
 
     @Test
     public void formatDates() {
-
         // format date with valid pattern '-' -> equals
         assertEquals(LocalDate.of(2019, 6, 15), formatValidDate("15-6-2019"));
 
@@ -28,10 +27,10 @@ public class DateFormatterTest {
         // format date with invalid pattern -> throw
         assertThrows(ParseException.class, () -> formatInvalidDate("13,5,2000"));
 
-        // format date with valid 2-digit date, compare with 4-digit version -> equals
+        // format date with valid 2-digit date (representing 2020), compare with 4-digit version -> equals
         assertEquals(LocalDate.of(2020, 5, 19), formatValidDate("19/5/20"));
 
-        // format date with 4-digit date (but in m/d/y), compare with 4-digit version (d/m/y) -> not equals
+        // format date with 4-digit date (in m/d/y), compare with 4-digit version (d/m/y) -> not equals
         assertNotEquals(LocalDate.of(2020, 3, 4), formatValidDate("3/4/2020"));
 
         // format invalid date (31/6/2020) -> throws
@@ -43,11 +42,12 @@ public class DateFormatterTest {
         // format invalid date (44/22/2020) -> throws
         assertThrows(ParseException.class, () -> formatInvalidDate("44/22/2020"));
 
+        // format invalid date (some string) -> throws
+        assertThrows(ParseException.class, () -> formatInvalidDate("string"));
     }
 
     @Test
     public void formatMonths() {
-
         // format month "jan" -> equals
         assertEquals(Month.JANUARY.getValue(), formatValidMonth("jan"));
 
@@ -63,6 +63,8 @@ public class DateFormatterTest {
         // format month "maybe" -> throws
         assertThrows(ParseException.class, () -> formatInvalidMonth("maybe"));
 
+        // format month "junit" -> throws
+        assertThrows(ParseException.class, () -> formatInvalidMonth("junit"));
     }
 
     /** Format a valid date. */

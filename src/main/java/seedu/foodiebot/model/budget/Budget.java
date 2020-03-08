@@ -5,9 +5,10 @@ import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_MONTH;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_WEEK;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import seedu.foodiebot.commons.core.date.DateRange;
-import seedu.foodiebot.commons.core.date.Dates;
+import seedu.foodiebot.commons.core.date.DefiniteDate;
 import seedu.foodiebot.logic.parser.exceptions.ParseException;
 
 /**
@@ -22,7 +23,7 @@ public class Budget {
     private float remainingBudget;
     private final String duration;
     private final LocalDate dateOfCreation;
-    private final DateRange cycleRange;
+    private DateRange cycleRange;
 
 
     /**
@@ -68,7 +69,7 @@ public class Budget {
      * @param duration The duration cycle of the budget.
      */
     public Budget(float totalBudget, String duration) {
-        this(totalBudget, totalBudget, duration, Dates.TODAY);
+        this(totalBudget, totalBudget, duration, DefiniteDate.TODAY);
     }
 
     public Budget() {
@@ -79,13 +80,13 @@ public class Budget {
     private DateRange setCycleRange(String duration) {
         try {
             if (duration.equals(DAILY)) {
-                return DateRange.ofSingle(Dates.TODAY);
+                return DateRange.ofSingle(DefiniteDate.TODAY);
 
             } else if (duration.equals(WEEKLY)) {
-                return DateRange.of(Dates.TODAY, Dates.TODAY.plusWeeks(1).minusDays(1));
+                return DateRange.of(DefiniteDate.TODAY, DefiniteDate.TODAY.plusWeeks(1).minusDays(1));
 
             } else if (duration.equals(MONTHLY)) {
-                return DateRange.of(Dates.TODAY, Dates.TODAY.plusMonths(1).minusDays(1));
+                return DateRange.of(DefiniteDate.TODAY, DefiniteDate.TODAY.plusMonths(1).minusDays(1));
 
             }
 
@@ -93,6 +94,12 @@ public class Budget {
             return null;
         }
         return null;
+    }
+
+    /** Resets the remaining budget to  */
+    public void resetRemainingBudget() {
+        this.remainingBudget = this.totalBudget;
+        this.cycleRange = setCycleRange(this.duration);
     }
 
     /**
@@ -140,14 +147,25 @@ public class Budget {
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof Budget // instanceof handles nulls
-                && totalBudget == (((Budget) other).totalBudget)); // state check
+        if (other == this) {
+            return true;
+        }
+
+        if (!(other instanceof Budget)) {
+            return false;
+        }
+
+        Budget otherBudget = (Budget) other;
+        return otherBudget.getTotalBudget() == totalBudget
+                && otherBudget.getRemainingBudget() == remainingBudget
+                && otherBudget.getDuration().equals(duration)
+                && otherBudget.getDateOfCreation().equals(dateOfCreation)
+                && otherBudget.getCycleRange().equals(cycleRange);
     }
 
     @Override
     public int hashCode() {
-        return Float.valueOf(totalBudget).hashCode();
+        return Objects.hash(totalBudget, remainingBudget, duration, dateOfCreation, cycleRange);
     }
 
 

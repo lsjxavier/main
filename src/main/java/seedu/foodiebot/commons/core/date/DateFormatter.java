@@ -33,7 +33,7 @@ public class DateFormatter {
                 "JUL", "AUG", "SEP",
                 "OCT", "NOV", "DEC",
                 "JANUARY", "FEBRUARY", "MARCH",
-                "APRIL", "MAY", "JUNE",
+                "APRIL", "JUNE",
                 "JULY", "AUGUST", "SEPTEMBER",
                 "OCTOBER", "NOVEMBER", "DECEMBER");
     }

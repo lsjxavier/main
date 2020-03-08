@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import seedu.foodiebot.commons.core.date.ConceptualDate;
 import seedu.foodiebot.commons.core.date.DateFormatter;
 import seedu.foodiebot.commons.core.date.DateRange;
 import seedu.foodiebot.commons.core.date.DateRangeStyle;
@@ -47,11 +48,11 @@ public class ReportCommandParser implements Parser<ReportCommand> {
 
         } else if (argPrefixCombination.equals(COMBINATION_ONLY_START)) {
             String start = getArgString(argMultimap, PREFIX_FROM_DATE);
-            return new ReportCommand(DateRange.of(start, PREFIX_FROM_DATE));
+            return new ReportCommand(DateRange.of(start, ConceptualDate.START_DATE));
 
         } else if (argPrefixCombination.equals(COMBINATION_ONLY_END)) {
             String end = getArgString(argMultimap, PREFIX_TO_DATE);
-            return new ReportCommand(DateRange.of(end, PREFIX_TO_DATE));
+            return new ReportCommand(DateRange.of(end, ConceptualDate.END_DATE));
 
         } else if (argPrefixCombination.equals(COMBINATION_ONLY_MONTH)) {
             String monthString = getArgString(argMultimap, PREFIX_DATE_BY_MONTH);
