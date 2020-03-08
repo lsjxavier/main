@@ -139,6 +139,39 @@ public class ArgumentTokenizerTest {
     }
 
     @Test
+    public void multimapContainsPrefixes() {
+        String argsString = "SomePreambleString p/ pSlash argument -t dashT argument";
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash, dashT);
+
+        // Supplied prefixes are subset of multimap key set
+        assertTrue(argMultimap.containsAll(pSlash));
+        assertTrue(argMultimap.containsAll(dashT, pSlash));
+        assertFalse(argMultimap.containsAll(pSlash, dashT, hatQ));
+
+        // Supplied prefixes are equal to multimap key set
+        assertTrue(argMultimap.containsExact(dashT, pSlash));
+        assertFalse(argMultimap.containsExact(pSlash));
+        assertFalse(argMultimap.containsExact(pSlash, dashT, hatQ, unknownPrefix));
+
+        // Any prefix is in multimap key set
+        assertTrue(argMultimap.containsAny(pSlash));
+        assertTrue(argMultimap.containsAny(pSlash, dashT, hatQ));
+    }
+
+    @Test
+    public void multimapSize() {
+        String argsStringA = "SomePreambleString p/ pSlash argument -t dashT argument";
+        ArgumentMultimap argMultimapA = ArgumentTokenizer.tokenize(argsStringA, pSlash, dashT);
+        assertEquals(3, argMultimapA.size());
+        assertEquals(2, argMultimapA.size(false));
+
+        String argsStringB = "SomePreambleString";
+        ArgumentMultimap argMultimapB = ArgumentTokenizer.tokenize(argsStringB, pSlash, dashT);
+        assertEquals(1, argMultimapB.size());
+        assertEquals(0, argMultimapB.size(false));
+    }
+
+    @Test
     public void equalsMethod() {
         Prefix aaa = new Prefix("aaa");
 
