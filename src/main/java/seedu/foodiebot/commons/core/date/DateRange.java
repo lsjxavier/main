@@ -178,7 +178,7 @@ public class DateRange {
      * @return a DateRange object.
      */
     public static DateRange generate() throws ParseException {
-        return DateRange.of(Dates.MIN_DATE, Dates.TODAY);
+        return DateRange.of(Dates.MIN_DATE, Dates.MAX_DATE);
     }
 
     /** Gets the start date of the DateRange. */

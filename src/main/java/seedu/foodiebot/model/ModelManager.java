@@ -154,6 +154,7 @@ public class ModelManager implements Model {
 
             Budget budget = newBot.get().getBudget();
 
+
             return Optional.of(budget);
         } catch (DataConversionException e) {
             return Optional.empty();

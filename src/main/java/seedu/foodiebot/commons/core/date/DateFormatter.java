@@ -31,11 +31,15 @@ public class DateFormatter {
         return List.of("JAN", "FEB", "MAR",
                 "APR", "MAY", "JUN",
                 "JUL", "AUG", "SEP",
-                "OCT", "NOV", "DEC");
+                "OCT", "NOV", "DEC",
+                "JANUARY", "FEBRUARY", "MARCH",
+                "APRIL", "MAY", "JUNE",
+                "JULY", "AUGUST", "SEPTEMBER",
+                "OCTOBER", "NOVEMBER", "DECEMBER");
     }
 
     /**
-     * Converts a String representation of a date into a LocalDate object.
+     * Converts a String representation of a date into a LocalDate object using a strict format resolver.
      * @param dateString the input String to format.
      * @return a LocalDate representation of the input String.
      * @throws ParseException if all possible DateTimeFormatter patterns are unable to format
@@ -63,9 +67,11 @@ public class DateFormatter {
 
     /** Formats the given String month into an integer. Throws a ParseException if the month is not valid. */
     public static int formatMonth(String month) throws ParseException {
+        String monthString = month.toUpperCase();
         List<String> monthFormats = monthFormats();
-        int monthIndex = monthFormats.indexOf(month.toUpperCase().substring(0, 3));
-        if (monthIndex > -1) {
+
+        if (monthFormats.contains(monthString)) {
+            int monthIndex = monthFormats.indexOf(monthString.substring(0, 3));
             return monthIndex + 1;
         }
         throw new ParseException(MESSAGE_INVALID_DATE);

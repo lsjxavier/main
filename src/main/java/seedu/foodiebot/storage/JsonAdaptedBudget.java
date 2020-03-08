@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import seedu.foodiebot.commons.core.date.Dates;
 import seedu.foodiebot.model.FoodieBot;
 import seedu.foodiebot.model.ReadOnlyFoodieBot;
 import seedu.foodiebot.model.budget.Budget;
@@ -60,10 +59,6 @@ public class JsonAdaptedBudget {
 
         Budget budget = new Budget(totalBudget, remainingBudget, duration, dateOfCreation,
                 cycleRangeStart, cycleRangeEnd);
-
-        if (!budget.getCycleRange().contains(Dates.TODAY)) {
-            budget = new Budget(totalBudget, totalBudget, duration, dateOfCreation);
-        }
 
         foodieBot.setBudget(budget);
         return foodieBot;

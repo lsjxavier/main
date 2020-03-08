@@ -6,7 +6,8 @@ import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_MONTH;
 
 import java.util.Optional;
 
-import seedu.foodiebot.logic.parser.exceptions.ParseException;
+import seedu.foodiebot.commons.core.date.Dates;
+import seedu.foodiebot.model.FoodieBot;
 import seedu.foodiebot.model.Model;
 import seedu.foodiebot.model.budget.Budget;
 
@@ -37,7 +38,7 @@ public class BudgetCommand extends Command {
         this.action = action;
     }
 
-    public BudgetCommand(String action) throws ParseException {
+    public BudgetCommand(String action) {
         this.budget = new Budget();
         this.action = action;
     }
@@ -46,19 +47,31 @@ public class BudgetCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         if (action.equals("set")) {
+            // Saves the budget to disk and return a feedback to the user.
+            model.setFoodieBot(new FoodieBot());
             model.setBudget(budget);
             return new CommandResult(COMMAND_WORD, String.format(MESSAGE_SUCCESS,
                     budget.getDuration(), budget.getTotalBudget(), budget.getRemainingWeeklyBudget()));
+
         } else {
-            Optional<Budget> savedBudget = model.getBudget();
-            if (savedBudget.equals(Optional.empty())) {
+            // Loads the file and gets the budget object.
+            Optional<Budget> jsonBudget = model.getBudget();
+            if (jsonBudget.equals(Optional.empty())) {
                 return new CommandResult(COMMAND_WORD, MESSAGE_FAILURE);
             }
-            model.setBudget(savedBudget.get());
 
+            // Gets the budget and checks if the current date is within the cycle.
+            Budget savedBudget = jsonBudget.get();
+            if (!savedBudget.getCycleRange().contains(Dates.TODAY)) {
+                savedBudget = new Budget(savedBudget.getTotalBudget(), savedBudget.getDuration());
+            }
+
+            // Saves the budget to disk and return a feedback to the user.
+            model.setFoodieBot(new FoodieBot());
+            model.setBudget(savedBudget);
             return new CommandResult(COMMAND_WORD, String.format(MESSAGE_SUCCESS,
-                    savedBudget.get().getDuration(), savedBudget.get().getTotalBudget(),
-                    savedBudget.get().getRemainingWeeklyBudget()));
+                    savedBudget.getDuration(), savedBudget.getTotalBudget(),
+                    savedBudget.getRemainingWeeklyBudget()));
         }
 
 
