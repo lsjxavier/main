@@ -56,13 +56,13 @@ public class BudgetCommand extends Command {
     public static Budget loadBudget(Model model) {
         return model.getBudget().isPresent()
                 ? model.getBudget().get()
-                : null;
+                : new Budget();
     }
 
     /** Helper function to hold a successful return message. */
     public static CommandResult commandSuccess(Budget budget) {
         return new CommandResult(COMMAND_WORD, String.format(MESSAGE_SUCCESS,
-                budget.getDuration(), budget.getTotalBudget(), budget.getRemainingWeeklyBudget()));
+                budget.getDurationAsString(), budget.getTotalBudget(), budget.getRemainingWeeklyBudget()));
     }
 
     @Override
@@ -75,7 +75,8 @@ public class BudgetCommand extends Command {
 
         } else {
             Budget savedBudget = loadBudget(model);
-            if (savedBudget != null) {
+
+            if (!savedBudget.equals(new Budget())) {
                 if (!systemDateIsInCycleRange(savedBudget)) {
                     savedBudget.resetRemainingBudget();
                 }

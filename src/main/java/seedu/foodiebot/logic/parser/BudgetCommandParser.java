@@ -5,10 +5,6 @@ import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_DAY;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_MONTH;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_WEEK;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import seedu.foodiebot.logic.commands.BudgetCommand;
 import seedu.foodiebot.logic.parser.exceptions.ParseException;
 import seedu.foodiebot.model.budget.Budget;
@@ -25,8 +21,8 @@ public class BudgetCommandParser implements Parser<BudgetCommand> {
     public BudgetCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_DATE_BY_DAY,
                 PREFIX_DATE_BY_WEEK, PREFIX_DATE_BY_MONTH);
-        String action = argMultimap.getPreamble();
 
+        String action = argMultimap.getPreamble();
         switch(action) {
         case "set":
             try {
@@ -45,19 +41,16 @@ public class BudgetCommandParser implements Parser<BudgetCommand> {
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, BudgetCommand.MESSAGE_USAGE));
     }
 
-    private static boolean isValidPrefix(Prefix duration) {
-        return duration.equals(PREFIX_DATE_BY_DAY)
-                || duration.equals(PREFIX_DATE_BY_WEEK)
-                || duration.equals(PREFIX_DATE_BY_MONTH);
-    }
-
     public Budget setBudget(ArgumentMultimap argMultimap) throws ParseException {
 
-        int argMultimapPrefixCount = getArgMultimapPrefixCount(argMultimap);
-        Prefix firstPrefix = argPrefixCombination(argMultimap).get(0);
+        if (argMultimap.size(false) == 1 && argMultimap.containsAny(
+                PREFIX_DATE_BY_DAY, PREFIX_DATE_BY_WEEK, PREFIX_DATE_BY_MONTH)) {
 
-        if (argMultimapPrefixCount == 1 && isValidPrefix(firstPrefix)) {
             try {
+                Prefix firstPrefix = argMultimap.prefixSet()
+                        .stream()
+                        .findFirst()
+                        .get();
                 String argValue = getArgString(argMultimap, firstPrefix);
                 float value = Float.parseFloat(argValue);
                 return new Budget(value, firstPrefix.toString());
@@ -66,6 +59,7 @@ public class BudgetCommandParser implements Parser<BudgetCommand> {
                 throw new ParseException(
                         String.format(MESSAGE_INVALID_COMMAND_FORMAT, BudgetCommand.MESSAGE_USAGE));
             }
+
         }
 
         throw new ParseException(
@@ -80,39 +74,4 @@ public class BudgetCommandParser implements Parser<BudgetCommand> {
                 .orElseThrow(() -> new ParseException(
                         String.format(MESSAGE_INVALID_COMMAND_FORMAT, BudgetCommand.MESSAGE_USAGE)));
     }
-
-    /** Returns the number of prefixes present in the {@code ArgumentMultimap} that has
-     * at least one argument.
-     * */
-    public int getArgMultimapPrefixCount(ArgumentMultimap argumentMultimap) {
-        List<Prefix> validPrefixes = List.of(PREFIX_DATE_BY_DAY,
-                PREFIX_DATE_BY_WEEK, PREFIX_DATE_BY_MONTH);
-
-        int count = 0;
-        for (Prefix prefix : validPrefixes) {
-            if (!argumentMultimap.getAllValues(prefix).isEmpty()) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    /** Retrieves the combination of prefixes in the {@code ArgumentMultimap} that has
-     * at least one argument.
-     * */
-    public List<Prefix> argPrefixCombination(ArgumentMultimap argumentMultimap) {
-        List<Prefix> validPrefixes = List.of(PREFIX_DATE_BY_DAY,
-                PREFIX_DATE_BY_WEEK, PREFIX_DATE_BY_MONTH);
-
-        ArrayList<Prefix> combination = new ArrayList<Prefix>();
-        for (Prefix prefix : validPrefixes) {
-            Optional<String> value = argumentMultimap.getValue(prefix);
-            if (!value.equals(Optional.empty())) {
-                combination.add(prefix);
-            }
-        }
-        return combination;
-    }
-
-
 }

@@ -129,6 +129,14 @@ public class Budget {
         return this.duration;
     }
 
+    public String getDurationAsString() {
+        return this.duration.equals(DAILY)
+                ? "daily"
+                : this.duration.equals(WEEKLY)
+                    ? "weekly"
+                    : "monthly";
+    }
+
     public LocalDate getDateOfCreation() {
         return this.dateOfCreation;
     }
@@ -158,9 +166,7 @@ public class Budget {
         Budget otherBudget = (Budget) other;
         return otherBudget.getTotalBudget() == totalBudget
                 && otherBudget.getRemainingBudget() == remainingBudget
-                && otherBudget.getDuration().equals(duration)
-                && otherBudget.getDateOfCreation().equals(dateOfCreation)
-                && otherBudget.getCycleRange().equals(cycleRange);
+                && otherBudget.getDuration().equals(duration);
     }
 
     @Override
