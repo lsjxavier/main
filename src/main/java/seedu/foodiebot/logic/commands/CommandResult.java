@@ -16,25 +16,12 @@ public class CommandResult {
     /** The application should exit. */
     private final boolean exit;
 
-    private final boolean isLocationSpecified;
-
     /** Constructs a {@code CommandResult} with the specified fields. */
     public CommandResult(String commandName, String feedbackToUser, boolean showHelp, boolean exit) {
         this.commandName = commandName;
         this.feedbackToUser = requireNonNull(feedbackToUser);
         this.showHelp = showHelp;
         this.exit = exit;
-        this.isLocationSpecified = false;
-    }
-
-    /** Constructs a {@code CommandResult} with the specified fields. */
-    public CommandResult(String commandName, String feedbackToUser, boolean showHelp, boolean exit,
-                         boolean isLocationSpecified) {
-        this.commandName = commandName;
-        this.feedbackToUser = requireNonNull(feedbackToUser);
-        this.showHelp = showHelp;
-        this.exit = exit;
-        this.isLocationSpecified = isLocationSpecified;
     }
     /**
      * Constructs a {@code CommandResult} with the specified {@code feedbackToUser}, and other
@@ -55,10 +42,6 @@ public class CommandResult {
 
     public boolean isExit() {
         return exit;
-    }
-
-    public boolean isLocationSpecified() {
-        return isLocationSpecified;
     }
 
     @Override

@@ -17,10 +17,10 @@ public class CanteenListPanel extends UiPart<Region> {
 
     @FXML private ListView<Canteen> simpleListView;
 
-    public CanteenListPanel(ObservableList<Canteen> canteenList, boolean showDistanceField) {
+    public CanteenListPanel(ObservableList<Canteen> canteenList) {
         super(FXML);
         simpleListView.setItems(canteenList);
-        simpleListView.setCellFactory(listView -> new CanteenListViewCell(showDistanceField));
+        simpleListView.setCellFactory(listView -> new CanteenListViewCell());
     }
 
     /**
@@ -28,10 +28,6 @@ public class CanteenListPanel extends UiPart<Region> {
      * CanteenCard}.
      */
     class CanteenListViewCell extends ListCell<Canteen> {
-        private final boolean showDistanceField;
-        protected CanteenListViewCell(boolean showDistanceField) {
-            this.showDistanceField = showDistanceField;
-        }
         @Override
         protected void updateItem(Canteen canteen, boolean empty) {
             super.updateItem(canteen, empty);
@@ -40,7 +36,7 @@ public class CanteenListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(new CanteenCard(canteen, getIndex() + 1, showDistanceField).getRoot());
+                setGraphic(new CanteenCard(canteen, getIndex() + 1).getRoot());
             }
         }
     }

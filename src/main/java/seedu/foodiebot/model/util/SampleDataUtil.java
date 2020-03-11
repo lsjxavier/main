@@ -25,6 +25,9 @@ public class SampleDataUtil {
             + "3. Walk straight and the canteen appears to your right";
     public static Canteen[] getSampleCanteens() {
         return new Canteen[]{
+            new Canteen(new Name("The Deck"), 2, 800, "COM1",
+                "com1_deck.png",
+                COM1_TO_DECK_DIRECTIONS, getTagSet("asian"), "deck.jpg"),
             new Canteen(
                 new Name("Nus Flavors"),
                 2,
@@ -32,10 +35,7 @@ public class SampleDataUtil {
                 "COM1",
                 "utown_flavors.png",
                 COM1_TO_NUSFLAVORS_DIRECTIONS,
-                getTagSet("asian", "western", "muslim"), "utown.jpg"),
-            new Canteen(new Name("The Deck"), 2, 800, "COM1",
-                "com1_deck.png",
-                COM1_TO_DECK_DIRECTIONS, getTagSet("asian"), "deck.jpg"),
+                getTagSet("asian", "western", "muslim"), "utown.jpg")
         };
     }
 

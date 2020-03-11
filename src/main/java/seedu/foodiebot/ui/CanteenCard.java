@@ -30,11 +30,10 @@ public class CanteenCard extends UiPart<Region> {
     @FXML private Label id;
     @FXML private Label numberOfStalls;
     @FXML private Label distance;
-    @FXML private Label distanceText;
     @FXML private Label nearestBlockName;
     @FXML private FlowPane tags;
 
-    public CanteenCard(Canteen canteen, int displayedIndex, boolean showDistanceField) {
+    public CanteenCard(Canteen canteen, int displayedIndex) {
         super(FXML);
         this.canteen = canteen;
         id.setText(displayedIndex + ". ");
@@ -43,9 +42,6 @@ public class CanteenCard extends UiPart<Region> {
         nearestBlockName.setText(canteen.getBlockName());
         numberOfStalls.setText(String.valueOf(canteen.getNumberOfStalls()));
         distance.setText(String.valueOf(canteen.getDistance()));
-        distance.setVisible(showDistanceField);
-        distanceText.setVisible(showDistanceField);
-        nearestBlockName.setVisible(showDistanceField);
         canteen.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));

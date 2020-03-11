@@ -73,15 +73,13 @@ public interface Model {
     /** Returns an unmodifiable view of the filtered canteen list */
     ObservableList<Canteen> getFilteredCanteenList();
 
-    /** Returns an unmodifiable view of the filtered canteen list sorted by distance */
-    ObservableList<Canteen> getFilteredCanteenListSortedByDistance();
-
     /**
      * Updates the filter of the filtered canteen list to filter by the given {@code predicate}.
      *
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredCanteenList(Predicate<Canteen> predicate);
+
     ObservableList<Stall> getFilteredStallList();
 
     ObservableList<Stall> getFilteredStallList(boolean isInitialised);

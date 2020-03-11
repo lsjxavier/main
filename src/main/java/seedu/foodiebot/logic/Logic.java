@@ -34,9 +34,6 @@ public interface Logic {
     /** Returns an unmodifiable view of the filtered list of canteens */
     ObservableList<Canteen> getFilteredCanteenList();
 
-    /** Returns an unmodifiable view of the filtered list of canteens sorted by distance */
-    ObservableList<Canteen> getFilteredCanteenListSortedByDistance();
-
     /** Returns the user prefs' address book file path. */
     Path getFoodieBotFilePath();
 

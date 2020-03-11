@@ -147,14 +147,6 @@ public class AddCommandTest {
             throw new AssertionError("This method should not be called.");
         }
 
-        /**
-         * Returns an unmodifiable view of the filtered canteen list sorted by distance
-         */
-        @Override
-        public ObservableList<Canteen> getFilteredCanteenListSortedByDistance() {
-            throw new AssertionError("This method should not be called.");
-        }
-
         @Override
         public void updateFilteredCanteenList(Predicate<Canteen> predicate) {
             throw new AssertionError("This method should not be called.");
