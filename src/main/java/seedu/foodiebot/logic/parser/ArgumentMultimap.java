@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Stores mapping of prefixes to their respective arguments. Each key may be associated with
@@ -54,5 +56,54 @@ public class ArgumentMultimap {
      */
     public String getPreamble() {
         return getValue(new Prefix("")).orElse("");
+    }
+
+    /**
+     * Returns a set view of all present {@code prefix} in the ArgumentMultimap.
+     */
+    public Set<Prefix> prefixSet() {
+        Set<Prefix> keySet = argMultimap.keySet();
+        keySet.remove(new Prefix(""));
+        return keySet;
+    }
+
+    /**
+     * Returns the size of the ArgumentMultimap, including the preamble (text before the first valid prefix).
+     */
+    public int size() {
+        return argMultimap.size();
+    }
+
+    /**
+     * Returns the size of the ArgumentMultimap, including or excluding the preamble
+     * (text before the first valid prefix).
+     */
+    public int size(boolean includePreamble) {
+        return includePreamble ? argMultimap.size() : argMultimap.size() - 1;
+    }
+
+    /**
+     * Returns true if the set of supplied prefixes is a subset of the ArgumentMultimap key set
+     * excluding the preamble.
+     * */
+    public boolean containsAll(Prefix... prefixes) {
+        return prefixSet().containsAll(Set.of(prefixes));
+    }
+
+    /**
+     * Returns true if the set of supplied prefixes is an exact copy of the ArgumentMultimap key set
+     * excluding the preamble.
+     */
+    public boolean containsExact(Prefix... prefixes) {
+        return prefixSet().equals(Set.of(prefixes));
+    }
+
+    /**
+     * Returns true if any member in the set of supplied prefixes exists in the ArgumentMultimap key set,
+     * excluding the preamble.
+     */
+    public boolean containsAny(Prefix... prefixes) {
+        return Stream.of(prefixes)
+                .anyMatch(p -> prefixSet().contains(p));
     }
 }

@@ -4,8 +4,8 @@ import static java.util.Objects.requireNonNull;
 import static seedu.foodiebot.commons.core.Messages.MESSAGE_BUDGET_VIEW;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_DATE_BY_MONTH;
 
-import java.util.Optional;
-
+import seedu.foodiebot.commons.core.date.DefiniteDate;
+import seedu.foodiebot.model.FoodieBot;
 import seedu.foodiebot.model.Model;
 import seedu.foodiebot.model.budget.Budget;
 
@@ -14,7 +14,7 @@ public class BudgetCommand extends Command {
     public static final String COMMAND_WORD = "budget";
 
     public static final String MESSAGE_USAGE =
-        COMMAND_WORD + "VIEW : View the budget. \n"
+        COMMAND_WORD + " VIEW : View the budget. \n"
             + "SET : Set the budget"
             + "Parameters: "
             + PREFIX_DATE_BY_MONTH
@@ -41,25 +41,51 @@ public class BudgetCommand extends Command {
         this.action = action;
     }
 
+    /** A boolean check if the current system date falls inside the budget range */
+    public static boolean systemDateIsInCycleRange(Budget budget) {
+        return budget.getCycleRange().contains(DefiniteDate.TODAY);
+    }
+
+    /** Helper function to write the budget to the model. */
+    public static void saveBudget(Model model, Budget budget) {
+        model.setFoodieBot(new FoodieBot());
+        model.setBudget(budget);
+    }
+
+    /** Helper function to read the budget from the model. */
+    public static Budget loadBudget(Model model) {
+        return model.getBudget().isPresent()
+                ? model.getBudget().get()
+                : new Budget();
+    }
+
+    /** Helper function to hold a successful return message. */
+    public static CommandResult commandSuccess(Budget budget) {
+        return new CommandResult(COMMAND_WORD, String.format(MESSAGE_SUCCESS,
+                budget.getDurationAsString(), budget.getTotalBudget(), budget.getRemainingWeeklyBudget()));
+    }
+
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
+
         if (action.equals("set")) {
-            model.setBudget(budget);
-            return new CommandResult(COMMAND_WORD, String.format(MESSAGE_SUCCESS,
-                    budget.getDuration(), budget.getTotalBudget(), budget.getRemainingWeeklyBudget()));
+            saveBudget(model, budget);
+            return commandSuccess(budget);
+
         } else {
-            Optional<Budget> savedBudget = model.getBudget();
-            if (savedBudget.equals(Optional.empty())) {
-                return new CommandResult(COMMAND_WORD, MESSAGE_FAILURE);
+            Budget savedBudget = loadBudget(model);
+
+            if (!savedBudget.equals(new Budget())) {
+                if (!systemDateIsInCycleRange(savedBudget)) {
+                    savedBudget.resetRemainingBudget();
+                }
+                saveBudget(model, savedBudget);
+                return commandSuccess(savedBudget);
             }
-            model.setBudget(savedBudget.get());
 
-            return new CommandResult(COMMAND_WORD, String.format(MESSAGE_SUCCESS,
-                    savedBudget.get().getDuration(), savedBudget.get().getTotalBudget(),
-                    savedBudget.get().getRemainingWeeklyBudget()));
+            return new CommandResult(COMMAND_WORD, MESSAGE_FAILURE);
         }
-
 
     }
 }

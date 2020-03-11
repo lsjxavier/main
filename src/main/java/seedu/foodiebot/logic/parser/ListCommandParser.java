@@ -1,18 +1,16 @@
 package seedu.foodiebot.logic.parser;
 
-import static seedu.foodiebot.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_FROM_DATE;
 
 import java.util.stream.Stream;
 
-import seedu.foodiebot.commons.core.index.Index;
-import seedu.foodiebot.logic.commands.GoToCanteenCommand;
+import seedu.foodiebot.logic.commands.ListCommand;
 import seedu.foodiebot.logic.parser.exceptions.ParseException;
 
 /**
  * Parses input arguments and creates a new GoToCanteenCommand object
  */
-public class GoToCanteenCommandParser implements Parser<GoToCanteenCommand> {
+public class ListCommandParser implements Parser<ListCommand> {
     /**
      * Returns true if none of the prefixes contains empty {@code Optional} values in the given
      * {@code ArgumentMultimap}.
@@ -29,23 +27,14 @@ public class GoToCanteenCommandParser implements Parser<GoToCanteenCommand> {
      *
      * @throws ParseException if the user input does not conform the expected format
      */
-    public GoToCanteenCommand parse(String args) throws ParseException {
+    public ListCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FROM_DATE);
         String enteredText = argMultimap.getPreamble();
-        if (!arePrefixesPresent(argMultimap, PREFIX_FROM_DATE)) {
-            throw new ParseException(
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, GoToCanteenCommand.MESSAGE_USAGE));
+        if (arePrefixesPresent(argMultimap, PREFIX_FROM_DATE)) {
+            String nearestBlockName = ParserUtil.parseBlockName(argMultimap.getValue(PREFIX_FROM_DATE).get());
+            return new ListCommand(nearestBlockName);
         }
 
-        Index index;
-        String nearestBlockName = ParserUtil.parseBlockName(argMultimap.getValue(PREFIX_FROM_DATE).get());
-
-        try {
-            index = ParserUtil.parseIndex(enteredText);
-            return new GoToCanteenCommand(index, nearestBlockName);
-        } catch (ParseException pe) {
-            String canteenName = ParserUtil.parseCanteenName(enteredText);
-            return new GoToCanteenCommand(canteenName, nearestBlockName);
-        }
+        return new ListCommand("");
     }
 }
