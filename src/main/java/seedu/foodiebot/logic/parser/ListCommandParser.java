@@ -1,6 +1,6 @@
 package seedu.foodiebot.logic.parser;
 
-import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_FROM;
+import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_FROM_DATE;
 
 import java.util.stream.Stream;
 
@@ -28,10 +28,10 @@ public class ListCommandParser implements Parser<ListCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public ListCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FROM);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FROM_DATE);
         String enteredText = argMultimap.getPreamble();
-        if (arePrefixesPresent(argMultimap, PREFIX_FROM)) {
-            String nearestBlockName = ParserUtil.parseBlockName(argMultimap.getValue(PREFIX_FROM).get());
+        if (arePrefixesPresent(argMultimap, PREFIX_FROM_DATE)) {
+            String nearestBlockName = ParserUtil.parseBlockName(argMultimap.getValue(PREFIX_FROM_DATE).get());
             return new ListCommand(nearestBlockName);
         }
 

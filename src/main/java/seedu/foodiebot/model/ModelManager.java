@@ -3,14 +3,18 @@ package seedu.foodiebot.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.foodiebot.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 
 import seedu.foodiebot.commons.core.GuiSettings;
 import seedu.foodiebot.commons.core.LogsCenter;
@@ -164,7 +168,17 @@ public class ModelManager implements Model {
 
     }
 
-
+    /**
+     * This function return a FileReader of the jsonfile (foodiebot.json).
+     * @return FileRead of the jsonfile
+     * @throws FileNotFoundException
+     */
+    @Override
+    public FileReader listOfCanteen() throws FileNotFoundException {
+        FoodieBotStorage foodieBotStorage =
+                new JsonFoodieBotStorage(userPrefs.getFoodieBotFilePath());
+        return new FileReader(String.valueOf(foodieBotStorage.getCanteensFilePath()));
+    }
 
     // =========== Filtered Person List Accessors
     // =============================================================
@@ -176,6 +190,13 @@ public class ModelManager implements Model {
     @Override
     public ObservableList<Canteen> getFilteredCanteenList() {
         return filteredCanteens;
+    }
+
+    @Override
+    public ObservableList<Canteen> getFilteredCanteenListSortedByDistance() {
+        SortedList<Canteen> sortedCanteenList = new SortedList<>(filteredCanteens);
+        sortedCanteenList.setComparator(Comparator.comparingInt(Canteen::getDistance));
+        return sortedCanteenList;
     }
 
     @Override
