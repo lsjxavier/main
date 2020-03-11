@@ -5,6 +5,7 @@ import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.foodiebot.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.foodiebot.testutil.Assert.assertThrows;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class CommandTestUtil {
             CommandResult result = command.execute(actualModel);
             assertEquals(expectedCommandResult, result);
             assertEquals(expectedModel, actualModel);
-        } catch (CommandException ce) {
+        } catch (CommandException | IOException ce) {
             throw new AssertionError("Execution of command should not fail.", ce);
         }
     }

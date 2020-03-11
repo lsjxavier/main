@@ -133,6 +133,7 @@ public class FoodieBot implements ReadOnlyFoodieBot {
         return budget;
     }
 
+
     //// stall-level operations
 
     /**

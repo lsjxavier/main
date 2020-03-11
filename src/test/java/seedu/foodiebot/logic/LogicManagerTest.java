@@ -97,7 +97,7 @@ public class LogicManagerTest {
      */
     private void assertCommandSuccess(
             String inputCommand, String expectedMessage, Model expectedModel)
-            throws CommandException, ParseException {
+            throws CommandException, ParseException, IOException {
         CommandResult result = logic.execute(inputCommand);
         assertEquals(expectedMessage, result.getFeedbackToUser());
         assertEquals(expectedModel, model);

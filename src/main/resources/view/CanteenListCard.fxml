@@ -31,8 +31,13 @@
         <Label fx:id="name" styleClass="cell_big_label" text="\$first" />
       </HBox>
 
-      <Label fx:id="distance" styleClass="cell_small_label" text="\$distance" visible="false" />
-      <Label fx:id="nearestBlockName" styleClass="cell_small_label" text="\$nearestBlockName" visible="false" />
+      <HBox>
+        <children>
+          <Label fx:id="distance" styleClass="cell_small_label" text="\$distance" />
+          <Label fx:id="distanceText" styleClass="cell_small_label" text="m from" />
+        </children>
+      </HBox>
+      <Label fx:id="nearestBlockName" styleClass="cell_small_label" text="\$nearestBlockName" />
          <HBox>
             <children>
                <Label text="Food Stalls: " />
