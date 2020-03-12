@@ -50,4 +50,9 @@ public class ReportCommand extends Command {
                 String.format(MESSAGE_SUCCESS,
                         dateRange.getStartDate().toString(), dateRange.getEndDate().toString()));
     }
+
+    @Override
+    public boolean needToSaveCommand() {
+        return false;
+    }
 }
