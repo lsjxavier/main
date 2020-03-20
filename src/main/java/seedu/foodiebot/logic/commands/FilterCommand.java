@@ -19,8 +19,10 @@ public class FilterCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "";
 
-    public FilterCommand() {
+    private String tag;
 
+    public FilterCommand(String tag) {
+        this.tag = tag;
     }
 
     @Override

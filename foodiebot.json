@@ -2,7 +2,7 @@
   "canteens" : [ {
     "name" : "The Deck",
     "distance" : 800,
-    "numberOfStalls" : 1,
+    "numberOfStalls" : 2,
     "nearestBlockName" : "COM1",
     "directionsImageName" : "com1_deck.png",
     "canteenImageName" : "deck.jpg",
@@ -11,11 +11,12 @@
   }, {
     "name" : "Nus Flavors",
     "distance" : 3200,
-    "numberOfStalls" : 11,
+    "numberOfStalls" : 2,
     "nearestBlockName" : "COM1",
     "directionsImageName" : "utown_flavors.png",
     "canteenImageName" : "utown.jpg",
     "directionsText" : "1. From Com1, take shuttle D2 to Utown\n2. Follow the path to Stephen Riady Centre 3. Walk straight and the canteen appears to your right",
     "tagged" : [ "muslim", "asian", "western" ]
-  } ]
+  } ],
+  "stalls" : [ ]
 }
