@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Logger;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,7 +37,6 @@ abstract class BaseScene {
 
     protected Logic logic;
     protected Stage primaryStage;
-
     @FXML
     protected MenuItem helpMenuItem;
     private final Logger logger = LogsCenter.getLogger(getClass());
@@ -46,10 +46,11 @@ abstract class BaseScene {
     private StackPane commandBoxPlaceholder;
     @FXML
     private StackPane listPanelPlaceholder;
+    @FXML
+    private StackPane extraListPanelPlaceholder;
     private ResultDisplay resultDisplay;
     @FXML
     private StackPane resultDisplayPlaceholder;
-
 
     private HelpWindow helpWindow;
 
@@ -65,6 +66,17 @@ abstract class BaseScene {
         listPanelPlaceholder = (StackPane) primaryStage.getScene().lookup("#listPanelPlaceholder");
         listPanelPlaceholder.getChildren().clear();
         listPanelPlaceholder.getChildren().add(regionUiPart.getRoot());
+    }
+
+    /**
+     * Clears the extraListPanel and adds the regionUiPart
+     * @param regionUiPart
+     */
+    void addToExtraListPanel(UiPart<Region> regionUiPart) {
+        extraListPanelPlaceholder = (StackPane) primaryStage.getScene().lookup(
+                "#extraListPanelPlaceholder");
+        extraListPanelPlaceholder.getChildren().clear();
+        extraListPanelPlaceholder.getChildren().add(regionUiPart.getRoot());
     }
 
     /**
@@ -88,8 +100,6 @@ abstract class BaseScene {
         statusbarPlaceholder.getChildren().clear();
         statusbarPlaceholder.getChildren().add(new Label(message));
     }
-
-
     StackPane getResultDisplayPlaceholder() {
         resultDisplayPlaceholder = (StackPane) primaryStage.getScene().lookup("#resultDisplayPlaceholder");
         return resultDisplayPlaceholder;
@@ -113,6 +123,8 @@ abstract class BaseScene {
     @FXML
     public void handleListStalls() {
         addToListPanel(new StallsListPanel(logic.getFilteredStallList(true)));
+        addToExtraListPanel(new CanteenListPanel(FXCollections.observableArrayList(
+                ParserContext.getCurrentCanteen().get()), false));
     }
 
     /**
@@ -121,6 +133,8 @@ abstract class BaseScene {
     @FXML
     public void handleListFood() {
         addToListPanel(new FoodListPanel(logic.getFilteredFoodList(true)));
+        addToExtraListPanel(new StallsListPanel(FXCollections.observableArrayList(
+                ParserContext.getCurrentStall().get())));
     }
 
     /**
@@ -150,7 +164,6 @@ abstract class BaseScene {
         try {
             commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
-
 
             if (commandResult instanceof DirectionsCommandResult) {
                 //new DirectionsWindowScene(getPrimaryStage(), logic, (DirectionsCommandResult) commandResult).show();
@@ -215,7 +228,6 @@ abstract class BaseScene {
             if (commandResult.isShowHelp()) {
                 handleHelp();
             }
-
             return commandResult;
         } catch (CommandException | ParseException | IOException e) {
             updateResultDisplay(e.getMessage());

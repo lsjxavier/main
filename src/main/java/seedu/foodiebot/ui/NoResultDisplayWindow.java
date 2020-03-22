@@ -52,9 +52,6 @@ public class NoResultDisplayWindow extends UiPart<Stage> {
     @FXML
     private StackPane statusbarPlaceholder;
 
-
-
-
     public NoResultDisplayWindow(Stage primaryStage, Logic logic, String layoutName) {
         super(layoutName, primaryStage);
         init(primaryStage, logic);
