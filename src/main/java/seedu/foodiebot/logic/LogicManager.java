@@ -106,7 +106,7 @@ public class LogicManager implements Logic {
             return FavoriteFood.class.getSimpleName();
 
         case TransactionsCommand.COMMAND_WORD:
-            //TODO Not Implemented
+            return "Transactions";
 
         case ClearCommand.COMMAND_WORD:
             //TODO Not Implemented
@@ -120,7 +120,7 @@ public class LogicManager implements Logic {
         case HelpCommand.COMMAND_WORD:
             //TODO Not Implemented
         case SelectItemCommand.COMMAND_WORD:
-            //TODO Not Implemented
+            return "Select";
         default:
             return "";
         }

@@ -67,7 +67,8 @@ public class MainApp extends Application {
         FoodieBotStorage foodieBotStorage =
             new JsonFoodieBotStorage(userPrefs.getFoodieBotFilePath(),
                     userPrefs.getStallsFilePath(), userPrefs.getFoodFilePath(),
-                    userPrefs.getBudgetFilePath(), userPrefs.getFavoriteFoodFilePath());
+                    userPrefs.getBudgetFilePath(), userPrefs.getFavoriteFoodFilePath(),
+                    userPrefs.getTransactionsFilePath());
 
         storage = new StorageManager(foodieBotStorage, userPrefsStorage);
 
