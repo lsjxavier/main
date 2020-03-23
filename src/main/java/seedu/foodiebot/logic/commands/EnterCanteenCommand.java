@@ -19,13 +19,13 @@ public class EnterCanteenCommand extends Command {
     public static final String COMMAND_WORD = "enter";
 
     public static final String MESSAGE_USAGE =
-        COMMAND_WORD
-            + "Parameters: "
-            + "CANTEEN_NAME \n"
-            + "Example: "
-            + COMMAND_WORD
-            + " "
-            + "deck ";
+            COMMAND_WORD
+                    + "Parameters: "
+                    + "CANTEEN_NAME \n"
+                    + "Example: "
+                    + COMMAND_WORD
+                    + " "
+                    + "deck ";
 
     public static final String MESSAGE_SUCCESS = "";
     private static final Logger logger = LogsCenter.getLogger(EnterCanteenCommand.class);
@@ -67,7 +67,6 @@ public class EnterCanteenCommand extends Command {
             }
             Canteen canteen = canteenList.get(index.get().getZeroBased());
             ParserContext.setCanteenContext(canteen);
-
             logger.info("Enter " + canteen.getName());
             model.updateFilteredStallList(s -> s.getCanteenName().equalsIgnoreCase(
                     canteen.getName().toString()));
