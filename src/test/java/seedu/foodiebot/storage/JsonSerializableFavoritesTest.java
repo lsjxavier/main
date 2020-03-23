@@ -6,18 +6,10 @@ import seedu.foodiebot.model.ModelManager;
 import seedu.foodiebot.model.UserPrefs;
 import seedu.foodiebot.model.util.SampleDataUtil;
 
-class JsonSerializableStallTest {
-
-    @Test
-    public void toModelType_duplicateStall() {
-        JsonAdaptedFood food = new JsonAdaptedFood("Chicken Chop", "5",
-            "is delicious", "ComboSet.png", "9",
-            "Nus Flavors", "Western");
-    }
-
+class JsonSerializableFavoritesTest {
     @Test
     public void constructor_validFoodieBot() {
-        new JsonSerializableStall(createSampleModel().getFoodieBot());
+        new JsonSerializableFavorites(createSampleModel().getFoodieBot());
     }
 
 

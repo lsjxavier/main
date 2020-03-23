@@ -57,8 +57,14 @@ public class MainApp extends Application {
             "=============================[ Initializing FoodieBot ]===========================");
         super.init();
 
-        AppParameters appParameters = AppParameters.parse(getParameters());
-        config = initConfig(appParameters.getConfigPath());
+        try {
+            AppParameters appParameters = AppParameters.parse(getParameters());
+            config = initConfig(appParameters.getConfigPath());
+        } catch (Exception ex) {
+            config = new Config();
+            logger.info("Parameters are empty");
+        }
+
 
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
@@ -79,6 +85,10 @@ public class MainApp extends Application {
         logic = new LogicManager(model, storage);
 
         ui = new UiManager(logic);
+    }
+
+    protected static Logger getLogger() {
+        return logger;
     }
 
     /**

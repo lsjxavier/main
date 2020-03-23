@@ -64,6 +64,9 @@ dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jUnitVersion
 
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jUnitVersion
+    compile group: 'org.testfx', name: 'testfx-junit5', version: '4.0.14-alpha' //Thanks for using https://jar-download.com
+    compile group: 'org.testfx', name: 'testfx-core', version: '4.0.3-alpha' //Thanks for using https://jar-download.com
+
 
     // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'

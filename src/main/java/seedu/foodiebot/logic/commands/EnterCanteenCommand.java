@@ -84,4 +84,19 @@ public class EnterCanteenCommand extends Command {
         }
         return new CommandResult(COMMAND_WORD, MESSAGE_SUCCESS);
     }
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        if (!(other instanceof EnterCanteenCommand)) {
+            return false;
+        }
+
+        EnterCanteenCommand otherCanteen = (EnterCanteenCommand) other;
+        return otherCanteen.index.orElseGet(() -> Index.fromZeroBased(0))
+            .equals(index.orElseGet(() -> Index.fromZeroBased(0)))
+            && otherCanteen.canteenName.orElseGet(() -> "").equals(canteenName.orElseGet(() -> ""));
+    }
 }

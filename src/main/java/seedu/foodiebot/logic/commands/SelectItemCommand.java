@@ -120,5 +120,24 @@ public class SelectItemCommand extends Command {
                     MESSAGE_SUCCESS, nameOfFood, priceOfFood));
         }
     }
+    @Override
+    public boolean needToSaveCommand() {
+        return false;
+    }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        if (!(other instanceof SelectItemCommand)) {
+            return false;
+        }
+
+        SelectItemCommand otherItem = (SelectItemCommand) other;
+        return otherItem.index.orElseGet(() -> Index.fromZeroBased(0))
+            .equals(index.orElseGet(() -> Index.fromZeroBased(0)))
+            && otherItem.foodName.orElseGet(() -> "").equals(foodName.orElseGet(() -> ""));
+    }
 }
