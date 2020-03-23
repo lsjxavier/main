@@ -4,6 +4,8 @@ import java.util.Optional;
 
 /** Stores the review for a food */
 public class Review {
+    public static final String NO_REVIEW = "No review";
+
     private final Optional<String> review;
 
     public Review(String review) {
@@ -14,13 +16,13 @@ public class Review {
         this.review = Optional.empty();
     }
 
-    public String getReview() {
-        return this.review.get();
+    public Optional<String> getReview() {
+        return this.review;
     }
 
     @Override
     public String toString() {
-        return getReview();
+        return review.isPresent() ? getReview().get() : NO_REVIEW;
     }
 
     @Override

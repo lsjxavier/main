@@ -81,8 +81,8 @@ public class PurchasedFoodList implements Iterable<PurchasedFood> {
     /**
      * Returns the backing list as an unmodifiable {@code ObservableList}.
      */
-    public ObservableList<PurchasedFood> asUnmodifiableObservableList() {
-        return internalUnmodifiableList;
+    public ObservableList<PurchasedFood> getList() {
+        return internalList;
     }
 
     @Override

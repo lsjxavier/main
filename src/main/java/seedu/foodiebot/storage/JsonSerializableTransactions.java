@@ -20,7 +20,7 @@ public class JsonSerializableTransactions {
 
     /** Constructs a {@code JsonSerializableTransactions} with the given stalls. */
     @JsonCreator
-    public JsonSerializableTransactions(@JsonProperty("purchased") List<JsonAdaptedPurchasedFood> transactions) {
+    public JsonSerializableTransactions(@JsonProperty("transactions") List<JsonAdaptedPurchasedFood> transactions) {
         this.transactions.addAll(transactions);
     }
 

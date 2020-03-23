@@ -245,6 +245,6 @@ public class FoodieBot implements ReadOnlyFoodieBot {
 
     @Override
     public ObservableList<PurchasedFood> getTransactionsList() {
-        return transactions.asUnmodifiableObservableList();
+        return transactions.getList();
     }
 }

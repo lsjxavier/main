@@ -45,6 +45,8 @@ public class TransactionsCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
+        model.loadFilteredTransactionsList();
+        model.updateFilteredTransactionsList(purchase -> dateRange.contains(purchase.getDateAdded()));
 
         return new CommandResult(COMMAND_WORD,
                 String.format(MESSAGE_SUCCESS,

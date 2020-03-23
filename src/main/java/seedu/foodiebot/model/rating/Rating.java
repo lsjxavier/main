@@ -5,6 +5,8 @@ import java.util.Optional;
 
 /** Stores the rating for a food */
 public class Rating {
+    public static final String NO_RATING = "No rating";
+
     private final Optional<Integer> rating;
 
     public Rating(int rating) throws IllegalArgumentException {
@@ -19,20 +21,20 @@ public class Rating {
         this.rating = Optional.empty();
     }
 
-    public int getRating() {
-        return this.rating.get();
+    public Optional<Integer> getRating() {
+        return this.rating;
     }
 
     @Override
     public String toString() {
-        return Integer.toString(this.rating.get());
+        return rating.isPresent() ? Integer.toString(this.rating.get()) : NO_RATING;
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof Rating // instanceof handles nulls
-                && this.rating.get() == ((Rating) other).getRating());
+                && this.rating == ((Rating) other).getRating());
     }
 
     @Override
