@@ -1,7 +1,8 @@
 package seedu.foodiebot.storage;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalTime;
+// import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -37,6 +38,7 @@ public class JsonAdaptedPurchasedFood {
 
     // Transaction fields
     private final LocalDate dateAdded;
+    private final LocalTime timeAdded;
     private final String rating;
     private final String review;
 
@@ -53,6 +55,7 @@ public class JsonAdaptedPurchasedFood {
             @JsonProperty("canteen") String canteen,
             @JsonProperty("stallName") String stallName,
             @JsonProperty("dateAdded") String dateAdded,
+            @JsonProperty("timeAdded") String timeAdded,
             @JsonProperty("rating") String rating,
             @JsonProperty("review") String review) {
         this.name = name;
@@ -62,7 +65,9 @@ public class JsonAdaptedPurchasedFood {
         this.stallNo = Integer.parseInt(stallNo);
         this.canteen = canteen;
         this.stallName = stallName;
-        this.dateAdded = LocalDate.parse(dateAdded, DateTimeFormatter.ofPattern("uuuu-M-d"));
+        // this.dateAdded = LocalDate.parse(dateAdded, DateTimeFormatter.ofPattern("uuuu-M-d"));
+        this.dateAdded = LocalDate.parse(dateAdded);
+        this.timeAdded = LocalTime.parse(timeAdded);
         this.rating = rating;
         this.review = review;
     }
@@ -77,6 +82,7 @@ public class JsonAdaptedPurchasedFood {
         this.canteen = source.getCanteen();
         this.stallName = source.getStallName();
         this.dateAdded = source.getDateAdded();
+        this.timeAdded = source.getTimeAdded();
         this.rating = source.getRating().getRating().toString();
         this.review = source.getReview().getReview().toString();
     }
@@ -113,7 +119,7 @@ public class JsonAdaptedPurchasedFood {
 
         return new PurchasedFood(modelName, price, description, foodImageName, stallNo,
                 canteen, modelStallName, getTagSet("1"),
-                dateAdded, pfRating, pfReview);
+                dateAdded, timeAdded, pfRating, pfReview);
     }
 
 

@@ -1,6 +1,7 @@
 package seedu.foodiebot.model.transaction;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Set;
 
 import seedu.foodiebot.model.food.Food;
@@ -13,6 +14,7 @@ import seedu.foodiebot.model.tag.Tag;
 public class PurchasedFood extends Food {
 
     private final LocalDate dateAdded;
+    private final LocalTime timeAdded;
     private Rating rating;
     private Review review;
 
@@ -28,17 +30,20 @@ public class PurchasedFood extends Food {
                          String stallName,
                          Set<Tag> tags,
                          LocalDate dateAdded,
+                         LocalTime timeAdded,
                          Rating rating,
                          Review review) {
         super(name, price, description, foodImageName, stallNo, canteen, stallName, tags);
         this.dateAdded = dateAdded;
+        this.timeAdded = timeAdded;
         this.rating = rating;
         this.review = review;
     }
 
-    public PurchasedFood(Food food, LocalDate dateAdded, Rating rating, Review review) {
+    public PurchasedFood(Food food, LocalDate dateAdded, LocalTime timeAdded, Rating rating, Review review) {
         this(food.getName(), food.getPrice(), food.getDescription(), food.getName(), food.getStallNo(),
-                food.getCanteen(), food.getStallName(), food.getTags(), dateAdded, rating, review);
+                food.getCanteen(), food.getStallName(), food.getTags(),
+                dateAdded, timeAdded, rating, review);
     }
 
     public void setRating(Rating newRating) {
@@ -51,6 +56,10 @@ public class PurchasedFood extends Food {
 
     public LocalDate getDateAdded() {
         return this.dateAdded;
+    }
+
+    public LocalTime getTimeAdded() {
+        return this.timeAdded;
     }
 
     public Rating getRating() {

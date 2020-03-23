@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -93,9 +94,10 @@ public class SelectItemCommand extends Command {
             model.loadFilteredTransactionsList();
 
             LocalDate dateAdded = LocalDate.now();
+            LocalTime timeAdded = LocalTime.now();
             Rating rating = new Rating();
             Review review = new Review();
-            PurchasedFood purchase = new PurchasedFood(food.get(), dateAdded, rating, review);
+            PurchasedFood purchase = new PurchasedFood(food.get(), dateAdded, timeAdded, rating, review);
 
             model.addPurchasedFood(purchase);
         }

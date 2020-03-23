@@ -240,7 +240,7 @@ public class FoodieBot implements ReadOnlyFoodieBot {
     }
 
     public void addPurchasedFood(PurchasedFood pf) {
-        transactions.add(pf);
+        transactions.addReverse(pf);
     }
 
     @Override

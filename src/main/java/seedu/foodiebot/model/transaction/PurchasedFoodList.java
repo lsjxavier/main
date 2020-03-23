@@ -16,8 +16,6 @@ import seedu.foodiebot.model.stall.exceptions.StallNotFoundException;
  */
 public class PurchasedFoodList implements Iterable<PurchasedFood> {
     private final ObservableList<PurchasedFood> internalList = FXCollections.observableArrayList();
-    private final ObservableList<PurchasedFood> internalUnmodifiableList =
-            FXCollections.unmodifiableObservableList(internalList);
 
     /**
      * Returns true if the list contains an equivalent food as the given argument.
@@ -34,6 +32,15 @@ public class PurchasedFoodList implements Iterable<PurchasedFood> {
         requireNonNull(toAdd);
         internalList.add(toAdd);
     }
+
+    /**
+     * Adds a food to the list in reverse order.
+     */
+    public void addReverse(PurchasedFood toAdd) {
+        add(toAdd);
+        internalList.sort((a, b) -> b.getTimeAdded().compareTo(a.getTimeAdded()));
+    }
+
 
     /**
      * Removes the equivalent food from the list. The food must exist in the list.
