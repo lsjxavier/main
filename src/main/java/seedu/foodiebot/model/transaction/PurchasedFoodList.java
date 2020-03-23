@@ -1,4 +1,4 @@
-package seedu.foodiebot.model.food;
+package seedu.foodiebot.model.transaction;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.foodiebot.commons.util.CollectionUtil.requireAllNonNull;
@@ -10,7 +10,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import seedu.foodiebot.model.stall.exceptions.StallNotFoundException;
-import seedu.foodiebot.model.transaction.PurchasedFood;
 
 /**
  * List of Food Available
@@ -44,6 +43,13 @@ public class PurchasedFoodList implements Iterable<PurchasedFood> {
         if (!internalList.remove(toRemove)) {
             throw new StallNotFoundException();
         }
+    }
+
+    /**
+     * Removes all food in this list.
+     */
+    public void removeAll() {
+        internalList.clear();
     }
 
     /**

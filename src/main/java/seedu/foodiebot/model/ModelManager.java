@@ -8,7 +8,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -345,12 +344,8 @@ public class ModelManager implements Model {
         requireNonNull(food);
 
         foodieBot.addPurchasedFood(food);
-        for (PurchasedFood pf : filteredTransactionsList) {
-            foodieBot.addPurchasedFood(pf);
-        }
 
     }
-
 
     @Override
     public void loadFilteredTransactionsList() {
@@ -361,7 +356,9 @@ public class ModelManager implements Model {
                             userPrefs.getFavoriteFoodFilePath(), userPrefs.getTransactionsFilePath());
             Storage storage = new StorageManager(foodieBotStorage);
             Optional<ReadOnlyFoodieBot> newBot = storage.readFoodieBot("Transactions");
+
             if (!newBot.equals(Optional.empty())) {
+                this.foodieBot.setTransactionsList(newBot.get().getTransactionsList());
                 filteredTransactionsList = new FilteredList<PurchasedFood>(newBot.get().getTransactionsList());
             }
 
@@ -371,9 +368,6 @@ public class ModelManager implements Model {
             // return Optional.empty();
         }
     }
-
-
-
 
     /**
      * .

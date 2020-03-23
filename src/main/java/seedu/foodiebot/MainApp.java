@@ -105,6 +105,7 @@ public class MainApp extends Application {
             storage.readFoodieBot(Canteen.class.getSimpleName());
 
             // storage.readFoodieBot(Budget.class.getSimpleName());
+            storage.readFoodieBot("Transactions");
 
             storage.readFoodieBot(Food.class.getSimpleName());
             storage.readFoodieBot(FavoriteFood.class.getSimpleName());

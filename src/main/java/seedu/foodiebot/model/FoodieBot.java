@@ -14,10 +14,10 @@ import seedu.foodiebot.model.canteen.Stall;
 import seedu.foodiebot.model.canteen.UniqueCanteenList;
 import seedu.foodiebot.model.favorites.FavoriteFood;
 import seedu.foodiebot.model.food.Food;
-import seedu.foodiebot.model.food.PurchasedFoodList;
 import seedu.foodiebot.model.food.UniqueFoodList;
 import seedu.foodiebot.model.stall.UniqueStallList;
 import seedu.foodiebot.model.transaction.PurchasedFood;
+import seedu.foodiebot.model.transaction.PurchasedFoodList;
 
 /**
  * Wraps all data at the application level Duplicates are not allowed (by .isSame_____ comparison)
@@ -246,5 +246,10 @@ public class FoodieBot implements ReadOnlyFoodieBot {
     @Override
     public ObservableList<PurchasedFood> getTransactionsList() {
         return transactions.getList();
+    }
+
+    public void setTransactionsList(ObservableList<PurchasedFood> newList) {
+        transactions.removeAll();
+        transactions.setFoods(newList);
     }
 }

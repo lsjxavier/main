@@ -89,12 +89,14 @@ public class SelectItemCommand extends Command {
         }
 
         if (food.isPresent()) {
+
             model.loadFilteredTransactionsList();
 
             LocalDate dateAdded = LocalDate.now();
             Rating rating = new Rating();
             Review review = new Review();
             PurchasedFood purchase = new PurchasedFood(food.get(), dateAdded, rating, review);
+
             model.addPurchasedFood(purchase);
         }
 
@@ -122,7 +124,7 @@ public class SelectItemCommand extends Command {
     }
     @Override
     public boolean needToSaveCommand() {
-        return false;
+        return true;
     }
 
     @Override
