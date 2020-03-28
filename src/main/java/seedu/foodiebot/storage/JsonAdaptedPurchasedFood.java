@@ -2,7 +2,6 @@ package seedu.foodiebot.storage;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-// import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -65,7 +64,6 @@ public class JsonAdaptedPurchasedFood {
         this.stallNo = Integer.parseInt(stallNo);
         this.canteen = canteen;
         this.stallName = stallName;
-        // this.dateAdded = LocalDate.parse(dateAdded, DateTimeFormatter.ofPattern("uuuu-M-d"));
         this.dateAdded = LocalDate.parse(dateAdded);
         this.timeAdded = LocalTime.parse(timeAdded);
         this.rating = rating;
@@ -83,8 +81,8 @@ public class JsonAdaptedPurchasedFood {
         this.stallName = source.getStallName();
         this.dateAdded = source.getDateAdded();
         this.timeAdded = source.getTimeAdded();
-        this.rating = source.getRating().getRating().toString();
-        this.review = source.getReview().getReview().toString();
+        this.rating = source.getRating().toString();
+        this.review = source.getReview().toString();
     }
 
     public static Set<Tag> getTagSet(String... strings) {
@@ -108,11 +106,11 @@ public class JsonAdaptedPurchasedFood {
         final String modelName = name;
         final String modelStallName = stallName;
 
-        Rating pfRating = rating.equals("Optional.empty")
+        Rating pfRating = rating.equals(Rating.NO_RATING)
                 ? new Rating()
                 : new Rating(Integer.parseInt(rating));
 
-        Review pfReview = review.equals("Optional.empty")
+        Review pfReview = review.equals(Rating.NO_RATING)
                 ? new Review()
                 : new Review(review);
 

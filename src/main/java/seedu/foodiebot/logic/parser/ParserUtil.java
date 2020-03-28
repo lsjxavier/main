@@ -14,7 +14,6 @@ import seedu.foodiebot.model.canteen.Address;
 import seedu.foodiebot.model.canteen.Block;
 import seedu.foodiebot.model.canteen.Canteen;
 import seedu.foodiebot.model.canteen.Name;
-import seedu.foodiebot.model.canteen.Stall;
 import seedu.foodiebot.model.food.Food;
 import seedu.foodiebot.model.tag.Tag;
 
@@ -33,6 +32,39 @@ public class ParserUtil {
         String trimmedIndex = oneBasedIndex.trim();
         if (!StringUtil.isNonZeroUnsignedInteger(trimmedIndex)) {
             throw new ParseException(MESSAGE_INVALID_INDEX);
+        }
+        return Index.fromOneBased(Integer.parseInt(trimmedIndex));
+    }
+
+    /**
+     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing
+     * whitespaces will be trimmed. If the index is more than the number of canteens throws
+     *
+     * @throws ParseException if the specified index is invalid (not non-zero unsigned integer or
+     * if the index is more than number of canteens.
+     */
+    public static Index parseCanteenIndex(String oneBasedIndex) throws ParseException {
+        String trimmedIndex = oneBasedIndex.trim();
+        int index = Integer.parseInt(trimmedIndex);
+        if (index <= 0 || index > Canteen.getNumCanteens()) {
+            throw new IndexOutOfBoundsException(Canteen.INVALID_CANTEEN_INDEX);
+        }
+        return Index.fromOneBased(Integer.parseInt(trimmedIndex));
+    }
+
+    /**
+     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing
+     * whitespaces will be trimmed. If the index is more than the number of canteens throws
+     *
+     * @throws ParseException if the specified index is invalid (not non-zero unsigned integer or
+     * if the index is more than number of canteens.
+     */
+    public static Index parseStallIndex(String oneBasedIndex, Canteen canteen)
+            throws ParseException {
+        String trimmedIndex = oneBasedIndex.trim();
+        int index = Integer.parseInt(trimmedIndex);
+        if (index <= 0 || index > canteen.getNumberOfStalls()) {
+            throw new IndexOutOfBoundsException(Canteen.INVALID_STALL_INDEX);
         }
         return Index.fromOneBased(Integer.parseInt(trimmedIndex));
     }
@@ -107,23 +139,6 @@ public class ParserUtil {
         }
         return trimmedCanteenName;
     }
-
-    /**
-     * Parses a {@code String stallName} into a {@code stallName}. Leading and trailing whitespaces will
-     * be trimmed
-     *
-     * @throws ParseException if the given {@code stallName} is invalid
-     */
-    public static String parseStallName(String stallName) throws ParseException {
-        requireNonNull(stallName);
-        String trimmedStallName = stallName.trim();
-        if (!Stall.isValidStall(trimmedStallName)) {
-            throw new ParseException(Stall.MESSAGE_CONSTRAINTS);
-        }
-        return trimmedStallName;
-
-    }
-
     /**
      * Parses a {@code String foodName} into a {@code foodName}. Leading and trailing whitespaces will
      * be trimmed

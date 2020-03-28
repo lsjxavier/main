@@ -20,7 +20,9 @@ import seedu.foodiebot.logic.commands.GoToCanteenCommand;
 import seedu.foodiebot.logic.commands.HelpCommand;
 import seedu.foodiebot.logic.commands.ListCommand;
 import seedu.foodiebot.logic.commands.RandomizeCommand;
+import seedu.foodiebot.logic.commands.RateCommand;
 import seedu.foodiebot.logic.commands.ReportCommand;
+import seedu.foodiebot.logic.commands.ReviewCommand;
 import seedu.foodiebot.logic.commands.SelectItemCommand;
 import seedu.foodiebot.logic.commands.TransactionsCommand;
 import seedu.foodiebot.logic.commands.exceptions.CommandException;
@@ -97,7 +99,6 @@ public class LogicManager implements Logic {
             //TODO Not Implemented
 
         case RandomizeCommand.COMMAND_WORD:
-            //no storage yet.
             return Randomize.class.getSimpleName();
 
         case FavoritesCommand.COMMAND_WORD:
@@ -109,6 +110,12 @@ public class LogicManager implements Logic {
         case ClearCommand.COMMAND_WORD:
             //TODO Not Implemented
 
+        case RateCommand.COMMAND_WORD:
+            return "Transactions";
+
+        case ReviewCommand.COMMAND_WORD:
+            return "Transactions";
+
         case FindCommand.COMMAND_WORD:
             //TODO Not Implemented
 
@@ -118,7 +125,7 @@ public class LogicManager implements Logic {
         case HelpCommand.COMMAND_WORD:
             //TODO Not Implemented
         case SelectItemCommand.COMMAND_WORD:
-            return "Select";
+            return "Transactions";
         default:
             return "";
         }
@@ -150,7 +157,7 @@ public class LogicManager implements Logic {
 
     @Override
     public Path getFoodieBotFilePath() {
-        return model.getAddressBookFilePath();
+        return model.getFoodieBotFilePath();
     }
 
     @Override
@@ -179,11 +186,17 @@ public class LogicManager implements Logic {
 
     @Override
     public ObservableList<Food> getFilteredFavoriteFoodList(boolean isInitialised) {
-        return model.getFilteredFavoriteFoodList();
+        return model.getFilteredFavoriteFoodList(isInitialised);
     }
 
     @Override
     public ObservableList<PurchasedFood> getFilteredTransactionsList() {
         return model.getFilteredTransactionsList();
     }
+
+    @Override
+    public ObservableList<Stall> getFilteredRandomizeList() {
+        return model.getFilteredRandomizeList();
+    }
+
 }

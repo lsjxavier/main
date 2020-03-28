@@ -16,6 +16,9 @@ public class ExitCommand extends Command {
     public static final String CHANGE_CONTEXT_ACKNOWLEDGEMENT =
             "Exited from menu : ";
 
+    public static final String MESSAGE_EXIT_FAVORITES =
+        "Exited from favorites : ";
+
     @Override
     public CommandResult execute(Model model) {
         String context = ParserContext.getCurrentContext();
@@ -31,6 +34,16 @@ public class ExitCommand extends Command {
             ParserContext.setCurrentStall(Optional.empty());
             return new CommandResult(COMMAND_WORD, CHANGE_CONTEXT_ACKNOWLEDGEMENT + context,
                 false, false);
+
+        case ParserContext.FAVORITE_CONTEXT:
+            return new CommandResult(COMMAND_WORD, MESSAGE_EXIT_FAVORITES + context,
+                false, false);
+
+        case ParserContext.TRANSACTIONS_CONTEXT:
+            ParserContext.setCurrentContext(ParserContext.MAIN_CONTEXT);
+            ParserContext.setCurrentCanteen(Optional.empty());
+            return new CommandResult(COMMAND_WORD, CHANGE_CONTEXT_ACKNOWLEDGEMENT + context,
+                    false, false);
 
         default:
             return new CommandResult(COMMAND_WORD, MESSAGE_EXIT_ACKNOWLEDGEMENT, false, true);

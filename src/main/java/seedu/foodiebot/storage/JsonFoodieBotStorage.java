@@ -198,8 +198,6 @@ public class JsonFoodieBotStorage implements FoodieBotStorage {
             return new UserPrefs().getFavoriteFoodFilePath();
         case "Transactions":
             return new UserPrefs().getTransactionsFilePath();
-        case "Select":
-            return new UserPrefs().getTransactionsFilePath();
         default:
             break;
         }
@@ -260,7 +258,7 @@ public class JsonFoodieBotStorage implements FoodieBotStorage {
             requireNonNull(foodieBot);
             JsonUtil.saveJsonFile(new JsonSerializableFavorites(foodieBot), filePath);
             break;
-        case "Select":
+        case "Transactions":
             requireNonNull(foodieBot);
             JsonUtil.saveJsonFile(new JsonSerializableTransactions(foodieBot), filePath);
             break;
